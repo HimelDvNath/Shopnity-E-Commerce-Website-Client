@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../../Components/Navbar/Navbar";
+import { Outlet } from "react-router";
 
 const HomeLayout = () => {
     return (
@@ -7,7 +8,9 @@ const HomeLayout = () => {
             <nav>
                 <Navbar></Navbar>
             </nav>
-            <main></main>
+            <main className="w-10/12 mx-auto py-10">
+                <Outlet></Outlet>
+            </main>
             <footer></footer>
         </div>
     );

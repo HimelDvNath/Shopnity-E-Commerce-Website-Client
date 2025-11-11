@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import "../../App.css";
 import logo from "../../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 const Navbar = () => {
+    const loginLocation = useLocation();
     const links = (
         <>
             <Link
@@ -60,7 +61,7 @@ const Navbar = () => {
     );
     return (
         <div className=' bg-base-100 shadow-sm '>
-            <div className='navbar w-11/12 mx-auto'>
+            <div className='navbar px-10'>
                 <div className='navbar-start'>
                     <div className='dropdown'>
                         <div
@@ -90,7 +91,11 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <div className='flex place-items-center'>
-                        <img src={logo} alt='logo' className='w-15 h-15' />
+                        <img
+                            src={logo}
+                            alt='logo'
+                            className='w-15 h-15 rounded-full'
+                        />
                         <a className='font-bold text-blue-950 text-lg md:text-xl lg:text-3xl'>
                             Shopnity
                         </a>
@@ -102,7 +107,7 @@ const Navbar = () => {
                 <div className='navbar-end'>
                     <div className='flex place-items-center gap-5'>
                         <div>
-                            <label className='input border-0'>
+                            <label className='input border-0 shadow-lg'>
                                 <svg
                                     className='h-[1em] opacity-50'
                                     xmlns='http://www.w3.org/2000/svg'
@@ -124,9 +129,16 @@ const Navbar = () => {
                                 />
                             </label>
                         </div>
-                        <Link to='/'>
-                            <FaRegUserCircle size={30} color='' />
-                        </Link>
+                        <div>
+                            {loginLocation.pathname === "/login" ? (
+                                <Link to='/admin/login' className="btn bg-orange-400 p-0 w-30 text-white">Admin LogIn</Link>
+                            ) : (
+                                <Link to='/login'>
+                                    <FaRegUserCircle size={30} color='' />
+                                </Link>
+                            )}
+                        </div>
+
                         <Link to='/'>
                             <FaShoppingCart size={30} color='' />
                         </Link>

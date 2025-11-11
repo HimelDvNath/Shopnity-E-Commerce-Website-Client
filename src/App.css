@@ -4,6 +4,7 @@
 @plugin "daisyui";
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
+  --btn-bg-color: oklch(75% 0.183 55.934);
 }
 *{
   font-family: "Inter", sans-serif;
