@@ -7,7 +7,7 @@ import { FaShoppingCart } from "react-icons/fa";
 
 const AdminNavbar = () => {
    const loginLocation = useLocation();
-    console.log(loginLocation);
+    // console.log(loginLocation);
     
     return (
         <div className=' bg-base-100 shadow-sm '>

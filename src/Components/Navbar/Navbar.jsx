@@ -1,11 +1,18 @@
-import React from "react";
-import { Link, useLocation } from "react-router";
+import React, { use, useContext } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import "../../App.css";
 import logo from "../../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import AuthProvider, { AuthContext } from "../../Provider/AuthProvider";
 const Navbar = () => {
-    const loginLocation = useLocation();
+    const { user, logOut } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        logOut()
+            .then((res) => navigate("/"))
+            .catch((err) => console.log(err));
+    };
     const links = (
         <>
             <Link
@@ -130,8 +137,12 @@ const Navbar = () => {
                             </label>
                         </div>
                         <div>
-                            {loginLocation.pathname === "/login" ? (
-                                <Link to='/admin/login' className="btn bg-orange-400 p-0 w-30 text-white">Admin LogIn</Link>
+                            {user ? (
+                                <button
+                                    onClick={handleLogOut}
+                                    className='btn bg-orange-400 p-0 w-30 text-white'>
+                                    LogOut
+                                </button>
                             ) : (
                                 <Link to='/login'>
                                     <FaRegUserCircle size={30} color='' />
