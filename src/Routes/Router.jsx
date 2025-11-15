@@ -2,15 +2,24 @@ import { createBrowserRouter } from "react-router";
 import HomeLayout from "../Layouts/HomeLayout/HomeLayout";
 import Footer from "../Components/Footer/Footer";
 import LogIn from "../Components/LogIn/LogIn";
-import UserLogin from "../Components/AdminLogin/AdminLogin";
-import UserLayout from "../Layouts/AdminLaout/AdminLayout";
-import AdminLayout from "../Layouts/AdminLaout/AdminLayout";
+import AdminLayout from '../Layouts/AdminLaout/AdminLayout'
 import AdminLogin from "../Components/AdminLogin/AdminLogin";
+import UserRoute from "./UserRouter";
+import AdminRoute from "./AdminRouter";
+import ProductForm from "../pages/ProductFrom";
 
 const router = createBrowserRouter([
+    // {
+    //     path: "/login",
+    //     Component: LogIn,
+    // },
     {
         path: "/",
-        element: <HomeLayout></HomeLayout>,
+        element: (
+            <UserRoute>
+                <HomeLayout />
+            </UserRoute>
+        ),
         children: [
             { index: true, path: "/home" },
             {
@@ -24,20 +33,19 @@ const router = createBrowserRouter([
         ],
     },
     {
-      path:'/admin',
-      Component: AdminLayout,
-      children:[
-        {index: true, path:'/admin'},
-        {
-          path:'/admin/login',
-          Component: AdminLogin
-        },
-        // {
-        //   path:'/admin/registration',
-        //   Component:
-        // }
-      ]
-    }
+        path: "/admin",
+        element: (
+            <AdminRoute>
+                <AdminLayout />
+            </AdminRoute>
+        ),
+        children: [
+            {
+              path:'/admin/add-product',
+              Component:ProductForm
+            }
+        ],
+    },
 ]);
 
 export default router;

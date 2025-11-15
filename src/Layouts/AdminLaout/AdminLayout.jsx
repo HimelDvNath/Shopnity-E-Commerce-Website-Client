@@ -11,7 +11,7 @@ const AdminLayout = () => {
                     <UserNavbar></UserNavbar>
                 </nav>
             </header>
-            <main className='grid grid-cols-12'>
+            <main className='grid grid-cols-12 mx-auto py-8'>
                 <aside className='col-span-2'>
                     <RightAside></RightAside>
                 </aside>
