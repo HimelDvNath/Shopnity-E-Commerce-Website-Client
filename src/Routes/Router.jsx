@@ -1,39 +1,69 @@
 import { createBrowserRouter } from "react-router";
 import HomeLayout from "../Layouts/HomeLayout/HomeLayout";
-import Footer from "../Components/Footer/Footer";
 import LogIn from "../Components/LogIn/LogIn";
-import AdminLayout from '../Layouts/AdminLaout/AdminLayout'
-import AdminLogin from "../Components/AdminLogin/AdminLogin";
+import AdminLayout from "../Layouts/AdminLaout/AdminLayout";
 import UserRoute from "./UserRouter";
 import AdminRoute from "./AdminRouter";
 import ProductForm from "../pages/ProductFrom";
+import Home from "../Components/Home/Home";
+import ProductDetails from "../pages/ProductDetails";
+import Loader from "../Components/Loader/Loader";
+import RegisterForm from "../pages/RegisterForm";
+import { Suspense } from "react";
+import Wishlist from "../pages/WishList";
 
 const router = createBrowserRouter([
-    // {
-    //     path: "/login",
-    //     Component: LogIn,
-    // },
     {
         path: "/",
+        hydrateFallbackElement: <Loader />,
         element: (
             <UserRoute>
-                <HomeLayout />
+                <Suspense fallback={<Loader />}>
+                    <HomeLayout />
+                </Suspense>
             </UserRoute>
         ),
         children: [
-            { index: true, path: "/home" },
             {
-                path: "/shop",
-                Component: Footer,
+                index: true,
+                path: "/",
+                hydrateFallbackElement: <Loader />,
+                loader: async () => {
+                    const res = await fetch("http://localhost:3000/products");
+                    return res.json();
+                },
+
+                element: <Home />,
+            },
+            {
+                path:'/wishlist',
+                element: <Wishlist/>
+            },
+
+            {
+                path: "/productDetails/:id",
+                hydrateFallbackElement: <Loader />,
+                loader: async ({ params }) => {
+                    const res = await fetch(
+                        `http://localhost:3000/products/${params.id}`
+                    );
+                    return res.json();
+                },
+                element: <ProductDetails />,
             },
             {
                 path: "/login",
                 element: <LogIn></LogIn>,
             },
+            {
+                path: "/register-form",
+                element: <RegisterForm />,
+            },
         ],
     },
     {
         path: "/admin",
+        hydrateFallbackElement: <Loader />,
         element: (
             <AdminRoute>
                 <AdminLayout />
@@ -41,9 +71,10 @@ const router = createBrowserRouter([
         ),
         children: [
             {
-              path:'/admin/add-product',
-              Component:ProductForm
-            }
+                path: "/admin/add-product",
+                hydrateFallbackElement: <Loader />,
+                Component: ProductForm,
+            },
         ],
     },
 ]);

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Outlet } from "react-router";
+import Footer from "../../Components/Footer/Footer";
+import Loader from "../../Components/Loader/Loader";
 
 const HomeLayout = () => {
     return (
@@ -8,10 +10,14 @@ const HomeLayout = () => {
             <nav>
                 <Navbar></Navbar>
             </nav>
-            <main className="w-10/12 mx-auto py-10">
-                <Outlet></Outlet>
+            <main className="w-11/12 mx-auto py-5">
+                <Suspense fallback={<Loader />}>
+                    <Outlet />
+                </Suspense>
             </main>
-            <footer></footer>
+            <footer>
+                <Footer></Footer>
+            </footer>
         </div>
     );
 };

@@ -1,80 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-// brand
-
-// category
-
-// description
-
-// discountPercentage
-
-// images
-
-// price
-
-// rating
-
-// returnPolicy
-
-// reviews
-
-// stock
-
-// tags
-
-// title
-
-// warrantyInformation
-
 const ProductFrom = () => {
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch("https://dummyjson.com/products");
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch products");
-                }
-
-                const data = await response.json();
-                data.products.map((product) => {
-                    const {
-                        brand,
-                        category,
-                        description,
-                        discountPercentage,
-                        images,
-                        price,
-                        returnPolicy,
-                        tags,
-                        stock,
-                        title,
-                        warrantyInformation,
-                    } = product;
-                    console.log("Brand:", brand);
-                    console.log("Category:", category);
-                    console.log("Description:", description);
-                    console.log("Discount Percentage:", discountPercentage);
-                    console.log("Images:", images);
-                    console.log("Price:", price);
-                    console.log("Return Policy:", returnPolicy);
-                    console.log("Tags:", tags);
-                    console.log("Stock:", stock);
-                    console.log("Title:", title);
-                    console.log("Warranty Information:", warrantyInformation);
-                });
-                console.log();
-            } catch (err) {
-                console.log("");
-            } finally {
-                console.log("");
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -299,7 +226,9 @@ const ProductFrom = () => {
                     </label>
                     <textarea
                         id='description'
+                        name='description'
                         rows='4'
+                        required
                         className='bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body'
                         placeholder='Write your product description here...'></textarea>
                 </div>

@@ -4,6 +4,7 @@ import "../../App.css";
 import logo from "../../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import AuthProvider, { AuthContext } from "../../Provider/AuthProvider";
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
@@ -150,6 +151,10 @@ const Navbar = () => {
                             )}
                         </div>
 
+                        <Link to='/wishlist'>
+                            <FaRegHeart size={30} color='' />
+                        </Link>
+                        
                         <Link to='/'>
                             <FaShoppingCart size={30} color='' />
                         </Link>
