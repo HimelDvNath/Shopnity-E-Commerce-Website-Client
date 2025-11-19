@@ -11,6 +11,7 @@ import Loader from "../Components/Loader/Loader";
 import RegisterForm from "../pages/RegisterForm";
 import { Suspense } from "react";
 import Wishlist from "../pages/WishList";
+import CartList from "../pages/CartList";
 
 const router = createBrowserRouter([
     {
@@ -39,7 +40,10 @@ const router = createBrowserRouter([
                 path:'/wishlist',
                 element: <Wishlist/>
             },
-
+            {
+                path:'/cartlist',
+                element: <CartList/>
+            },
             {
                 path: "/productDetails/:id",
                 hydrateFallbackElement: <Loader />,

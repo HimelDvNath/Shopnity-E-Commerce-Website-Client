@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 import WishlistButton from "./WishlistButton";
+import CartListButton from "./CartListButton";
 
 
 const ProductDetails = () => {
@@ -91,9 +92,7 @@ const ProductDetails = () => {
 
                 {/* Buttons */}
                 <div className="mt-8 flex gap-4">
-                    <button className="btn btn-primary px-6 py-3 rounded-xl text-white bg-blue-600 hover:bg-blue-700 transition">
-                        Add to Cart
-                    </button>
+                    <CartListButton product={product}/>
                     <button className="btn px-6 py-3 rounded-xl border border-gray-400 hover:bg-gray-100 transition">
                         Buy Now
                     </button>

@@ -3,12 +3,14 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import WishlistButton from "./WishlistButton";
 import { IoMdHeart } from "react-icons/io";
+import CartListButton from "./CartListButton";
 
 const Wishlist = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [wishlist, setWishlist] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [cartProductId, setCartProductId] = useState(null);
 
     useEffect(() => {
         if (!user) {
@@ -110,26 +112,10 @@ const Wishlist = () => {
             navigate("/login");
             return;
         }
-
-        try {
-            const res = await fetch(
-                `http://localhost:3000/users/cart/${user.uid}`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ productId: product._id }),
-                }
-            );
-
-            const result = await res.json();
-
-            if (!res.ok)
-                throw new Error(result.error || "Failed to add to cart");
-
-            alert(`${product.title} added to cart!`);
-        } catch (error) {
-            console.error(error);
-            alert(error.message);
+        {
+            product._id == cartProductId
+                ? setCartProductId("")
+                : setCartProductId(product._id);
         }
     };
 
@@ -256,12 +242,7 @@ const Wishlist = () => {
 
                             {/* Action Buttons */}
                             <div className='flex gap-2 mt-auto'>
-                                <button
-                                    onClick={() => handleAddToCart(product)}
-                                    disabled={product.stock === 0}
-                                    className='btn btn-primary flex-1 disabled:bg-gray-300 disabled:cursor-not-allowed'>
-                                    Add to Cart
-                                </button>
+                                <CartListButton product={product} />
                                 <button
                                     onClick={() =>
                                         navigate(
@@ -272,6 +253,8 @@ const Wishlist = () => {
                                     View
                                 </button>
                             </div>
+
+                            <div></div>
                         </div>
                     );
                 })}

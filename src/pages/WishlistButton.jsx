@@ -3,7 +3,7 @@ import { IoMdHeart } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
-const WishlistButton = ({ productId, productData, onWishlistUpdate, size = 30 }) => {
+const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [favorite, setFavorite] = useState(false);
@@ -53,7 +53,6 @@ const WishlistButton = ({ productId, productData, onWishlistUpdate, size = 30 })
     const addToWishlist = async () => {
         const wishlistData = {
             productId: productId,
-            productData: productData
         };
         
         const response = await fetch(

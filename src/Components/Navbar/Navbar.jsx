@@ -155,7 +155,7 @@ const Navbar = () => {
                             <FaRegHeart size={30} color='' />
                         </Link>
                         
-                        <Link to='/'>
+                        <Link to='/cartlist'>
                             <FaShoppingCart size={30} color='' />
                         </Link>
                     </div>
