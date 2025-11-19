@@ -12,6 +12,7 @@ import RegisterForm from "../pages/RegisterForm";
 import { Suspense } from "react";
 import Wishlist from "../pages/WishList";
 import CartList from "../pages/CartList";
+import Users from "../pages/Users";
 
 const router = createBrowserRouter([
     {
@@ -79,7 +80,12 @@ const router = createBrowserRouter([
                 hydrateFallbackElement: <Loader />,
                 Component: ProductForm,
             },
+            {
+                path:"/admin/users",
+                Component: Users
+            }
         ],
+        
     },
 ]);
 

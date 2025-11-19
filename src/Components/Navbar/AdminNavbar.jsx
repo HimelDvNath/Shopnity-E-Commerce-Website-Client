@@ -1,22 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import "../../App.css";
 import logo from "../../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
-import AuthProvider, { AuthContext } from '../../Provider/AuthProvider';
+import AuthProvider, { AuthContext } from "../../Provider/AuthProvider";
 
 const AdminNavbar = () => {
-//    const loginLocation = useLocation();
+    //    const loginLocation = useLocation();
     // console.log(loginLocation);
-    const {user, logOut} = useContext(AuthContext);
+    const { user, logOut } = useContext(AuthContext);
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const handleLogOut = () => {
         logOut()
             .then((res) => navigate("/"))
             .catch((err) => console.log(err));
     };
-    
+
     return (
         <div className=' bg-base-100 shadow-sm '>
             <div className='navbar px-10'>
@@ -41,7 +42,6 @@ const AdminNavbar = () => {
                                 />{" "}
                             </svg>
                         </div>
-                        
                     </div>
                     <div className='flex place-items-center'>
                         <img
@@ -54,16 +54,41 @@ const AdminNavbar = () => {
                         </a>
                     </div>
                 </div>
-                
+
                 <div className='navbar-end'>
                     <div className='flex place-items-center gap-5'>
-                        
-                        <div>
-                            { user ? (
-                                <button onClick={handleLogOut} className="btn bg-orange-400 p-0 w-30 text-white">Log Out</button>
+                        <div className='relative'>
+                            {user ? (
+                                <>
+                                    {/* Button */}
+                                    <button
+                                        onClick={() => setOpen(!open)}
+                                        className='btn bg-orange-400 text-white px-4 py-2 rounded-lg'>
+                                        Admin
+                                    </button>
+
+                                    {/* Dropdown */}
+                                    <div
+                                        className={`
+              absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg 
+              overflow-hidden transition-all duration-300 origin-top 
+              ${open ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"}
+            `}>
+                                        <button
+                                            onClick={handleLogOut}
+                                            className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
+                                            {user.email}
+                                        </button>
+                                        <button
+                                            onClick={handleLogOut}
+                                            className='block text-center w-full  px-4 py-2 hover:bg-orange-100'>
+                                            Log Out
+                                        </button>
+                                    </div>
+                                </>
                             ) : (
                                 <Link to='/login'>
-                                    <FaRegUserCircle size={30} color='' />
+                                    <FaRegUserCircle size={30} />
                                 </Link>
                             )}
                         </div>

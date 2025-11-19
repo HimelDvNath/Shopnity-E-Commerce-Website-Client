@@ -3,8 +3,9 @@ import { Link } from 'react-router';
 
 const RightAside = () => {
     return (
-        <div className=''>
-            <Link to='/admin/add-product' className='p-3 bg-gray-300 hover:bg-gray-400 rounded-2xl'>Add Product</Link>
+        <div className='grid grid-cols-1 gap-2'>
+            <Link to='/admin/add-product' className='p-3 text-center bg-gray-300 hover:bg-gray-400 rounded-2xl'>Add Product</Link>
+            <Link to='/admin/users' className='p-3 text-center bg-gray-300 hover:bg-gray-400 rounded-2xl'>View Users</Link>
         </div>
     );
 };
