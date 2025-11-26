@@ -13,6 +13,8 @@ import { Suspense } from "react";
 import Wishlist from "../pages/WishList";
 import CartList from "../pages/CartList";
 import Users from "../pages/Users";
+import ProductsListAdmin from "../pages/ProductsListAdmin";
+import UpdateProductForm from "../pages/UpdateProductForm";
 
 const router = createBrowserRouter([
     {
@@ -35,7 +37,7 @@ const router = createBrowserRouter([
                     return res.json();
                 },
 
-                element: <Home />,
+                element:(<Suspense fallback={<Loader/>}><Home /></Suspense>),
             },
             {
                 path:'/wishlist',
@@ -68,7 +70,12 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin",
+        id :'admin-parent',
         hydrateFallbackElement: <Loader />,
+        loader: async () => {
+                    const res = await fetch("http://localhost:3000/products");
+                    return res.json();
+                },
         element: (
             <AdminRoute>
                 <AdminLayout />
@@ -83,6 +90,21 @@ const router = createBrowserRouter([
             {
                 path:"/admin/users",
                 Component: Users
+            },
+            {
+                path:"/admin/products-list",
+                Component: ProductsListAdmin
+            },
+            {
+                path: `/admin/products/:id/edit`,
+                hydrateFallbackElement: <Loader />,
+                loader: async ({ params }) => {
+                    const res = await fetch(
+                        `http://localhost:3000/products/${params.id}`
+                    );
+                    return res.json();
+                },
+                Component: UpdateProductForm
             }
         ],
         

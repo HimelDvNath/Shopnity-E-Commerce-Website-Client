@@ -5,6 +5,7 @@ import signup from "../assets/signup.json";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import Loader from "../Components/Loader/Loader";
 
 const RegisterForm = () => {
     const { userSignUp } = useContext(AuthContext);
@@ -18,8 +19,10 @@ const RegisterForm = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = (e) => {
+        setLoading(true);
         e.preventDefault();
 
         if (passwordError || phoneError || !passwordMatch) return;
@@ -50,10 +53,14 @@ const RegisterForm = () => {
                     padding: "0.5em 1em",
                     background: "#fff",
                     iconColor: "#4ade80",
-                    willClose: () => navigate("/"),
+                    willClose: () => {
+                        navigate("/"),
+                        setLoading(false);
+                    },
                 });
             })
             .catch((error) => {
+                setLoading(false);
                 const errorMsg = error.code.split("/")[1].replace(/-/g, " ");
                 Swal.fire({
                     title: `<span style="font-size:1.2rem; font-weight:600; color:#ef4444;">${errorMsg}</span>`,
@@ -121,13 +128,14 @@ const RegisterForm = () => {
     };
 
     const handleConfirmPasswordBlur = () => {
-        setConfirmPasswordFocused(true); // Keep showing error after blur if there's a mismatch
+        setConfirmPasswordFocused(true);
     };
 
-    // Only show password mismatch error when confirm password is focused or has value and doesn't match
     const shouldShowPasswordMismatch =
         confirmPasswordFocused && confirmPassword && !passwordMatch;
-
+    if(loading){
+        return <Loader/>
+    }
     return (
         <div className='w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-primary via-neutral-secondary to-neutral-tertiary-soft p-4'>
             <div className='hero w-full'>

@@ -25,3 +25,4 @@ dist-ssr
 # Firebase env
 .env
 src/Firebase/serviceAccountKey.json
+node_modules
