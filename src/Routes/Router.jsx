@@ -15,6 +15,8 @@ import CartList from "../pages/CartList";
 import Users from "../pages/Users";
 import ProductsListAdmin from "../pages/ProductsListAdmin";
 import UpdateProductForm from "../pages/UpdateProductForm";
+import BuyNow from "../pages/BuyNow";
+import OrderListAdmin from "../pages/OrderListAdmin";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +50,10 @@ const router = createBrowserRouter([
                 element: <CartList/>
             },
             {
+                path:'/cartlist/buy-now',
+                element: <BuyNow/>
+            },
+            {
                 path: "/productDetails/:id",
                 hydrateFallbackElement: <Loader />,
                 loader: async ({ params }) => {
@@ -64,6 +70,14 @@ const router = createBrowserRouter([
             },
             {
                 path: "/register-form",
+                element: <RegisterForm />,
+            },
+            {
+                path: "/user/profile",
+                element: <RegisterForm />,
+            },
+            {
+                path: "/user/order/:id",
                 element: <RegisterForm />,
             },
         ],
@@ -105,7 +119,12 @@ const router = createBrowserRouter([
                     return res.json();
                 },
                 Component: UpdateProductForm
-            }
+            },
+            {
+                path:"/admin/orders-list",
+                Component: OrderListAdmin
+            },
+           
         ],
         
     },

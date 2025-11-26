@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { useNavigate } from "react-router";
+import BuyNow from "./BuyNow";
 
 const CartList = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [checkOut, setCheckOut] = useState(true);
 
     useEffect(() => {
         if (!user) {
@@ -20,12 +22,16 @@ const CartList = () => {
         try {
             setLoading(true);
             // Get cart list
-            const resCart = await fetch(`http://localhost:3000/users/cartlist/${user.uid}`);
+            const resCart = await fetch(
+                `http://localhost:3000/users/cartlist/${user.uid}`
+            );
             const cartData = await resCart.json();
 
             // Fetch product details for each productId
             const productPromises = cartData.map(async (item) => {
-                const resProduct = await fetch(`http://localhost:3000/products/${item.productId}`);
+                const resProduct = await fetch(
+                    `http://localhost:3000/products/${item.productId}`
+                );
                 const product = await resProduct.json();
                 return { ...product, quantity: item.quantity || 1 };
             });
@@ -45,7 +51,10 @@ const CartList = () => {
                 `http://localhost:3000/users/cartlist/${user.uid}/${productId}`,
                 { method: "DELETE" }
             );
-            if (res.ok) setCartItems((prev) => prev.filter((item) => item._id !== productId));
+            if (res.ok)
+                setCartItems((prev) =>
+                    prev.filter((item) => item._id !== productId)
+                );
         } catch (err) {
             console.error(err);
         }
@@ -54,26 +63,41 @@ const CartList = () => {
     const handleQuantityChange = (productId, quantity) => {
         if (quantity < 1) return;
         setCartItems((prev) =>
-            prev.map((item) => (item._id === productId ? { ...item, quantity } : item))
+            prev.map((item) =>
+                item._id === productId ? { ...item, quantity } : item
+            )
         );
     };
 
     const totalPrice = cartItems.reduce((sum, item) => {
-        const discountedPrice =
-            Math.round(item.price - (item.price * (item.discountPercentage || 0)) / 100);
+        const discountedPrice = Math.round(
+            item.price - (item.price * (item.discountPercentage || 0)) / 100
+        );
         return sum + discountedPrice * (item.quantity || 1);
     }, 0);
 
+    const handleBuyNow = () => {
+        const outOfStock = cartItems.find((item) => item.quantity > item.stock);
+
+        if (!outOfStock) {
+            navigate("/cartlist/buy-now", { state: { products: cartItems } });
+        } else {
+            alert(
+                `${outOfStock.title} - insufficient stock available. You ordered ${outOfStock.quantity} items, but only ${outOfStock.stock} are available in stock. Please reduce your order quantity and try again.`
+            );
+            setCheckOut(false);
+        }
+    };
     if (loading) return <div>Loading Cart...</div>;
-    if (!cartItems.length) return <div className='p-6'>Your cart is empty.</div>;
+    if (!cartItems.length)
+        return <div className='p-6'>Your cart is empty.</div>;
 
     return (
         <div className='flex flex-col lg:flex-row gap-6 p-6 max-w-7xl mx-auto'>
             {/* Cart Items */}
             <div className='flex-1'>
                 {cartItems.map((item) => {
-                    const discountedPrice =
-                         Math.round(
+                    const discountedPrice = Math.round(
                         item.price * (1 - item.discountPercentage / 100)
                     );
                     return (
@@ -97,7 +121,10 @@ const CartList = () => {
                                     min={1}
                                     value={item.quantity || 1}
                                     onChange={(e) =>
-                                        handleQuantityChange(item._id, Number(e.target.value))
+                                        handleQuantityChange(
+                                            item._id,
+                                            Number(e.target.value)
+                                        )
                                     }
                                     className='w-16 border rounded px-2 py-1'
                                 />
@@ -111,7 +138,7 @@ const CartList = () => {
                     );
                 })}
             </div>
- 
+
             {/* Cart Summary */}
             <div className='w-full lg:w-1/3 border p-4 rounded shadow-md h-fit'>
                 <h2 className='text-xl font-bold mb-4'>Estimate</h2>
@@ -119,7 +146,9 @@ const CartList = () => {
                     <span>Total:</span>
                     <span className='font-bold'>৳{totalPrice}</span>
                 </div>
-                <button className='w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
+                <button
+                    onClick={() => handleBuyNow()}
+                    className='w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
                     Buy Now
                 </button>
             </div>

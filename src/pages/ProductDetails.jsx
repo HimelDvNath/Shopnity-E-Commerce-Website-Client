@@ -1,12 +1,11 @@
-import React from "react";
-import { useLoaderData } from "react-router";
+import React, { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
 import WishlistButton from "./WishlistButton";
 import CartListButton from "./CartListButton";
 
 
 const ProductDetails = () => {
     const product = useLoaderData();
-
     const {
         brand,
         category,
@@ -91,11 +90,9 @@ const ProductDetails = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="mt-8 flex gap-4">
+                <div className="mt-8 flex w-3/6 gap-4">
                     <CartListButton product={product}/>
-                    <button className="btn px-6 py-3 rounded-xl border border-gray-400 hover:bg-gray-100 transition">
-                        Buy Now
-                    </button>
+                    
                 </div>
             </div>
         </div>

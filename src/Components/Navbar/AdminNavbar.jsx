@@ -75,7 +75,6 @@ const AdminNavbar = () => {
               ${open ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"}
             `}>
                                         <button
-                                            onClick={handleLogOut}
                                             className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
                                             {user.email}
                                         </button>

@@ -1,4 +1,4 @@
-import React, { use, useContext } from "react";
+import React, { use, useContext, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import "../../App.css";
 import logo from "../../assets/logo.png";
@@ -8,6 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import AuthProvider, { AuthContext } from "../../Provider/AuthProvider";
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [open, setOpen] =useState(false);
     const navigate = useNavigate();
     const handleLogOut = () => {
         logOut()
@@ -67,6 +68,7 @@ const Navbar = () => {
             </Link>
         </>
     );
+    console.log(user)
     return (
         <div className=' bg-base-100 shadow-sm '>
             <div className='navbar px-10'>
@@ -137,27 +139,57 @@ const Navbar = () => {
                                 />
                             </label>
                         </div>
-                        <div>
-                            {user ? (
-                                <button
-                                    onClick={handleLogOut}
-                                    className='btn bg-orange-400 p-0 w-30 text-white'>
-                                    LogOut
-                                </button>
-                            ) : (
-                                <Link to='/login'>
-                                    <FaRegUserCircle size={30} color='' />
-                                </Link>
-                            )}
-                        </div>
 
                         <Link to='/wishlist'>
                             <FaRegHeart size={30} color='' />
                         </Link>
-                        
+
                         <Link to='/cartlist'>
                             <FaShoppingCart size={30} color='' />
                         </Link>
+                        <div>
+                            {user ? (
+                                <>
+                                    {/* Button */}
+                                    <button
+                                        onClick={() => setOpen(!open)}
+                                        className=' text-black py-2 rounded-lg cursor-pointer z-30'>
+                                        <FaRegUserCircle size={35} color="blue"/>
+                                    </button>
+
+                                    {/* Dropdown */}
+                                    <div
+                                        className={`
+                                          absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg 
+                                          overflow-hidden transition-all duration-300 origin-top z-30
+                                          ${
+                                              open
+                                                  ? "scale-y-100 opacity-100"
+                                                  : "scale-y-0 opacity-0"
+                                          }
+                                        `}>
+                                        <button className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
+                                            {user.email}
+                                        </button>
+                                        <button onClick={()=>navigate('/user/profile')} className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
+                                            Profile
+                                        </button>
+                                        <button onClick={()=>navigate(`/user/order/${user.uid}`)} className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
+                                            View Order
+                                        </button>
+                                        <button
+                                            onClick={handleLogOut}
+                                            className='block text-center w-full  px-4 py-2 hover:bg-orange-100'>
+                                            Log Out
+                                        </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <Link to='/login'>
+                                    <FaRegUserCircle size={30} />
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
