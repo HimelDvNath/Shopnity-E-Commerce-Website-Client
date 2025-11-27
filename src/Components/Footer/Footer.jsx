@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
 
 const Footer = () => {
+    const navigate = useNavigate();
     const links = (
         <>
             <Link
@@ -59,7 +60,7 @@ const Footer = () => {
     return (
         <footer className='footer footer-horizontal footer-center bg-gray-400 text-white text-primary-content p-10'>
             <aside>
-                <div className='flex flex-col place-items-center gap-2'>
+                <div onClick={()=>navigate('/')} className='flex flex-col place-items-center gap-2 cursor-pointer'>
                     <img
                         src={logo}
                         alt='logo'

@@ -18,6 +18,7 @@ import UpdateProductForm from "../pages/UpdateProductForm";
 import BuyNow from "../pages/BuyNow";
 import OrderListAdmin from "../pages/OrderListAdmin";
 import OrderUser from "../pages/OrderUser";
+import ProfileUser from "../pages/ProfileUser";
 
 const router = createBrowserRouter([
     {
@@ -75,7 +76,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "/user/profile",
-                element: <RegisterForm />,
+                hydrateFallbackElement: <Loader />,
+                loader: async () => {
+                    const res = await fetch("http://localhost:3000/users");
+                    return res.json();
+                },
+                element: <ProfileUser />,
             },
             {
                 path: "/user/order/:id",

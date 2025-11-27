@@ -99,7 +99,7 @@ const Navbar = () => {
                             {links}
                         </ul>
                     </div>
-                    <div className='flex place-items-center'>
+                    <div onClick={()=>navigate('/')} className='flex place-items-center cursor-pointer'>
                         <img
                             src={logo}
                             alt='logo'
@@ -167,9 +167,6 @@ const Navbar = () => {
                                                   : "scale-y-0 opacity-0"
                                           }
                                         `}>
-                                        <button className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
-                                            {user.email}
-                                        </button>
                                         <button onClick={()=>navigate('/user/profile')} className='block w-full text-center px-4 py-2 hover:bg-orange-100'>
                                             Profile
                                         </button>
