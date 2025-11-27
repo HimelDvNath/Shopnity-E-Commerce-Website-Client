@@ -30,35 +30,45 @@ export default function UpdateProductForm() {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        
+
         const updateData = {};
 
         if (form.brand.value !== brand) updateData.brand = form.brand.value;
-        if (form.category.value !== category) updateData.category = form.category.value;
-        if (parseFloat(form.price.value) !== price) updateData.price = parseFloat(form.price.value);
-        if (parseFloat(form.discountPercentage.value) !== discountPercentage) updateData.discountPercentage = parseFloat(form.discountPercentage.value);
-        if (parseInt(form.stock.value) !== stock) updateData.stock = parseInt(form.stock.value);
+        if (form.category.value !== category)
+            updateData.category = form.category.value;
+        if (parseFloat(form.price.value) !== price)
+            updateData.price = parseFloat(form.price.value);
+        if (parseFloat(form.discountPercentage.value) !== discountPercentage)
+            updateData.discountPercentage = parseFloat(
+                form.discountPercentage.value
+            );
+        if (parseInt(form.stock.value) !== stock)
+            updateData.stock = parseInt(form.stock.value);
         if (form.title.value !== title) updateData.title = form.title.value;
-        if (form.warrantyInformation.value !== warrantyInformation) updateData.warrantyInformation = form.warrantyInformation.value;
-        if (form.returnPolicy.value !== returnPolicy) updateData.returnPolicy = form.returnPolicy.value;
-        if (form.description.value !== description) updateData.description = form.description.value;
-        
+        if (form.warrantyInformation.value !== warrantyInformation)
+            updateData.warrantyInformation = form.warrantyInformation.value;
+        if (form.returnPolicy.value !== returnPolicy)
+            updateData.returnPolicy = form.returnPolicy.value;
+        if (form.description.value !== description)
+            updateData.description = form.description.value;
+
         // Handle tags
-        const newTags = form.tags.value ? form.tags.value.split(',').map(tag => tag.trim()) : [];
+        const newTags = form.tags.value
+            ? form.tags.value.split(",").map((tag) => tag.trim())
+            : [];
         const currentTags = Array.isArray(tags) ? tags : [tags].filter(Boolean);
         if (JSON.stringify(newTags) !== JSON.stringify(currentTags)) {
             updateData.tags = newTags;
         }
-        if(form.image.value){
+        if (form.image.value) {
             const file = formData.get("image");
             if (file && file instanceof File) {
                 const base64Image = await convertToBase64(file);
                 updateData.image = base64Image;
             }
-        }else{
+        } else {
             updateData.image = image;
         }
-
 
         //send to the server
         // axios use kora jay...it's simple and easy
@@ -76,7 +86,6 @@ export default function UpdateProductForm() {
             );
 
             const data = await response.json();
-            console.log(data);
 
             if (data.modifiedCount > 0) {
                 Swal.fire({

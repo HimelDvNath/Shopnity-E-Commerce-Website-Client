@@ -91,8 +91,7 @@ const CartListButton = ({ product }) => {
             disabled={loading || product.stock === 0}
             className={`btn flex-1 ${
                 inCart ? "btn-outline" : "btn-primary"
-            } disabled:bg-gray-300 disabled:cursor-not-allowed`}
-        >
+            } disabled:bg-gray-300 disabled:cursor-not-allowed`}>
             {loading
                 ? inCart
                     ? "Removing..."

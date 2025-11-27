@@ -121,8 +121,8 @@ const BuyNow = () => {
             // Simulate API call
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            const state = {
-                products: products.map(items =>  items._id),
+            const orderData = {
+                products: products.map((item) => item._id),
                 totalAmount:
                     calculateTotal() + (selectedPayment === "cod" ? 25 : 0),
                 paymentMethod: selectedPayment,
@@ -131,22 +131,57 @@ const BuyNow = () => {
                 transactionId: transactionId || `TXN-${Date.now()}`,
                 user: user.uid,
             };
-            // console.log(state);
-            //send to the server
-            fetch("http://localhost:3000/orders", {
+
+            // Send order to server
+            const response = await fetch("http://localhost:3000/orders", {
                 method: "POST",
                 headers: {
-                    "content-type": "application/json",
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(state),
-            }).then((res) => res.json()).catch(error => {console.log(error.message)}
+                body: JSON.stringify(orderData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            await response.json();
+
+            // Update product stock for each product - ONLY send necessary fields
+            await Promise.all(
+                products.map(async (product) => {
+                    // Only send the stock field that needs to be updated
+                    const stockUpdate = {
+                        stock: parseInt(product.stock) - product.quantity,
+                    };
+
+                    const productsResponse = await fetch(
+                        `http://localhost:3000/products/${product._id}`,
+                        {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(stockUpdate), // Send only stock update
+                        }
+                    );
+
+                    if (!productsResponse.ok) {
+                        throw new Error(
+                            `Failed to update product stock. Status: ${productsResponse.status}`
+                        );
+                    }
+
+                    return await productsResponse.json();
+                })
             );
 
-            Swal.fire({
+            // Show success message
+            await Swal.fire({
                 toast: true,
                 position: "top-end",
                 icon: "success",
-                title: "Order successfully!",
+                title: "Order successful!",
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,
@@ -154,12 +189,26 @@ const BuyNow = () => {
                 padding: "0.5em 1em",
                 background: "#fff",
                 iconColor: "#4ade80",
-                willClose: () => {
-                    navigate("/");
-                },
             });
+
+            navigate("/");
         } catch (error) {
-            alert("Payment failed. Please try again.");
+            console.error("Payment failed:", error);
+
+            // Show error message to user
+            await Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "error",
+                title: "Payment failed. Please try again.",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                width: 300,
+                padding: "0.5em 1em",
+                background: "#fff",
+                iconColor: "#ef4444",
+            });
         } finally {
             setIsProcessing(false);
         }

@@ -9,11 +9,10 @@ const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
     const [favorite, setFavorite] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    
     useEffect(() => {
         if (!user) {
             setFavorite(false);
-            navigate('/');
+            navigate("/");
             return;
         }
 
@@ -35,7 +34,7 @@ const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
                 }
 
                 const data = await res.json();
-                
+
                 if (data && (data.productId === productId || data._id)) {
                     setFavorite(true);
                 } else {
@@ -54,7 +53,7 @@ const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
         const wishlistData = {
             productId: productId,
         };
-        
+
         const response = await fetch(
             `http://localhost:3000/users/wishlist/${user.uid}`,
             {
@@ -109,7 +108,7 @@ const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
             } else {
                 await removeFromWishlist();
                 console.log("Removed from wishlist");
-                
+
                 // Notify parent component about the removal
                 if (onWishlistUpdate) {
                     onWishlistUpdate(productId);
@@ -126,14 +125,14 @@ const WishlistButton = ({ productId, onWishlistUpdate, size = 30 }) => {
     };
 
     return (
-        <button 
+        <button
             onClick={handleWishlistToggle}
             disabled={isLoading}
-            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all hover:scale-105"
-            aria-label={favorite ? "Remove from wishlist" : "Add to wishlist"}
-        >
+            className='p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all hover:scale-105'
+            aria-label={favorite ? "Remove from wishlist" : "Add to wishlist"}>
             {isLoading ? (
-                <div className={`w-6 h-6 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin`}></div>
+                <div
+                    className={`w-6 h-6 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin`}></div>
             ) : (
                 <IoMdHeart
                     size={size}

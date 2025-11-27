@@ -43,9 +43,12 @@ export default function Users() {
             }
 
             // 2️⃣ Delete from MongoDB
-            const mongoRes = await fetch(`http://localhost:3000/users/${email}`, {
-                method: "DELETE",
-            });
+            const mongoRes = await fetch(
+                `http://localhost:3000/users/${email}`,
+                {
+                    method: "DELETE",
+                }
+            );
             const mongoData = await mongoRes.json();
 
             if (!mongoRes.ok) {

@@ -19,11 +19,13 @@ import BuyNow from "../pages/BuyNow";
 import OrderListAdmin from "../pages/OrderListAdmin";
 import OrderUser from "../pages/OrderUser";
 import ProfileUser from "../pages/ProfileUser";
+import ErrorPage from "../Components/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         hydrateFallbackElement: <Loader />,
+        errorElement:<ErrorPage/>,
         element: (
             <UserRoute>
                 <Suspense fallback={<Loader />}>
@@ -41,19 +43,23 @@ const router = createBrowserRouter([
                     return res.json();
                 },
 
-                element:(<Suspense fallback={<Loader/>}><Home /></Suspense>),
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <Home />
+                    </Suspense>
+                ),
             },
             {
-                path:'/wishlist',
-                element: <Wishlist/>
+                path: "/wishlist",
+                element: <Wishlist />,
             },
             {
-                path:'/cartlist',
-                element: <CartList/>
+                path: "/cartlist",
+                element: <CartList />,
             },
             {
-                path:'/cartlist/buy-now',
-                element: <BuyNow/>
+                path: "/cartlist/buy-now",
+                element: <BuyNow />,
             },
             {
                 path: "/productDetails/:id",
@@ -96,12 +102,13 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        id :'admin-parent',
+        id: "admin-parent",
         hydrateFallbackElement: <Loader />,
+        errorElement:<ErrorPage/>,
         loader: async () => {
-                    const res = await fetch("http://localhost:3000/products");
-                    return res.json();
-                },
+            const res = await fetch("http://localhost:3000/products");
+            return res.json();
+        },
         element: (
             <AdminRoute>
                 <AdminLayout />
@@ -114,12 +121,12 @@ const router = createBrowserRouter([
                 Component: ProductForm,
             },
             {
-                path:"/admin/users",
-                Component: Users
+                path: "/admin/users",
+                Component: Users,
             },
             {
-                path:"/admin/products-list",
-                Component: ProductsListAdmin
+                path: "/admin/products-list",
+                Component: ProductsListAdmin,
             },
             {
                 path: `/admin/products/:id/edit`,
@@ -130,15 +137,13 @@ const router = createBrowserRouter([
                     );
                     return res.json();
                 },
-                Component: UpdateProductForm
+                Component: UpdateProductForm,
             },
             {
-                path:"/admin/orders-list",
-                Component: OrderListAdmin
+                path: "/admin/orders-list",
+                Component: OrderListAdmin,
             },
-           
         ],
-        
     },
 ]);
 

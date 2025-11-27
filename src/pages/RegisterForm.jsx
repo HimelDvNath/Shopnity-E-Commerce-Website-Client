@@ -54,8 +54,7 @@ const RegisterForm = () => {
                     background: "#fff",
                     iconColor: "#4ade80",
                     willClose: () => {
-                        navigate("/"),
-                        setLoading(false);
+                        navigate("/"), setLoading(false);
                     },
                 });
             })
@@ -133,8 +132,8 @@ const RegisterForm = () => {
 
     const shouldShowPasswordMismatch =
         confirmPasswordFocused && confirmPassword && !passwordMatch;
-    if(loading){
-        return <Loader/>
+    if (loading) {
+        return <Loader />;
     }
     return (
         <div className='w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-primary via-neutral-secondary to-neutral-tertiary-soft p-4'>
