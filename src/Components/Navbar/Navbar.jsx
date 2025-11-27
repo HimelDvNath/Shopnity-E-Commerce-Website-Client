@@ -68,7 +68,6 @@ const Navbar = () => {
             </Link>
         </>
     );
-    console.log(user)
     return (
         <div className=' bg-base-100 shadow-sm '>
             <div className='navbar px-10'>
